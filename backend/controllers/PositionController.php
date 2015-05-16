@@ -5,17 +5,16 @@ namespace backend\controllers;
 use console\perm\AuditTable;
 use console\perm\UserRole;
 use Yii;
-use common\models\Worker;
-use backend\models\WorkerSearch;
+use common\models\Position;
+use backend\models\PositionSearch;
 use yii\web\Controller;
-use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * WorkerController implements the CRUD actions for Worker model.
+ * PositionController implements the CRUD actions for Position model.
  */
-class WorkerController extends Controller
+class PositionController extends Controller
 {
     public function behaviors()
     {
@@ -30,22 +29,23 @@ class WorkerController extends Controller
     }
 
     /**
-     * Lists all Worker models.
+     * Lists all Position models.
      *
      * @throws NotFoundHttpException
      * @return mixed
      */
     public function actionIndex()
     {
-        if (!UserRole::getAccess(new Worker(), 'select', false)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_select');
+        if (!UserRole::getAccess(new Position(), 'select', false)) {
+            AuditTable::listen(Yii::$app->user->id,  'position', 're_select');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'select');
+            AuditTable::listen(Yii::$app->user->id,  'salary', 'select');
         }
 
-        $searchModel = new WorkerSearch();
+        $searchModel = new PositionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -53,7 +53,7 @@ class WorkerController extends Controller
     }
 
     /**
-     * Displays a single Worker model.
+     * Displays a single Position model.
      *
      * @param integer $id
      * @throws NotFoundHttpException
@@ -61,19 +61,20 @@ class WorkerController extends Controller
      */
     public function actionView($id)
     {
-        if (!UserRole::getAccess(new Worker(), 'select', false)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_select');
+        if (!UserRole::getAccess(new Position(), 'select', false)) {
+            AuditTable::listen(Yii::$app->user->id,  'position', 're_select');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'select');
+            AuditTable::listen(Yii::$app->user->id,  'salary', 'select');
         }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Worker model.
+     * Creates a new Position model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * @throws NotFoundHttpException
@@ -81,13 +82,14 @@ class WorkerController extends Controller
      */
     public function actionCreate()
     {
-        if (!UserRole::getAccess(new Worker(), 'insert', true)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_insert');
+        if (!UserRole::getAccess(new Position(), 'insert', true)) {
+            AuditTable::listen(Yii::$app->user->id,  'position', 're_insert');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'insert');
+            AuditTable::listen(Yii::$app->user->id,  'salary', 'insert');
         }
-        $model = new Worker();
+
+        $model = new Position();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -99,7 +101,7 @@ class WorkerController extends Controller
     }
 
     /**
-     * Updates an existing Worker model.
+     * Updates an existing Position model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
@@ -108,11 +110,11 @@ class WorkerController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (!UserRole::getAccess(new Worker(), 'update', false)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_update');
+        if (!UserRole::getAccess(new Position(), 'update', false)) {
+            AuditTable::listen(Yii::$app->user->id,  'position', 're_update');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'update');
+            AuditTable::listen(Yii::$app->user->id,  'salary', 'update');
         }
 
         $model = $this->findModel($id);
@@ -127,7 +129,7 @@ class WorkerController extends Controller
     }
 
     /**
-     * Deletes an existing Worker model.
+     * Deletes an existing Position model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
@@ -137,27 +139,28 @@ class WorkerController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!UserRole::getAccess(new Worker(), 'delete', true)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_delete');
+        if (!UserRole::getAccess(new Position(), 'dalete', true)) {
+            AuditTable::listen(Yii::$app->user->id,  'position', 're_delete');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'delete');
+            AuditTable::listen(Yii::$app->user->id,  'salary', 'delete');
         }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Worker model based on its primary key value.
+     * Finds the Position model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Worker the loaded model
+     * @return Position the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Worker::findOne($id)) !== null) {
+        if (($model = Position::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

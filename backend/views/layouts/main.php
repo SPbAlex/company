@@ -34,22 +34,27 @@ AppAsset::register($this);
             $menuItems = [
                 ['label' => 'Home', 'url' => ['/site/index']],
             ];
-            $menuItems[] = ['label' => 'Role', 'url' => ['/role/index']];
-            $menuItems[] = ['label' => 'Permission', 'url' => ['/permission/index']];
-            $menuItems[] = ['label' => 'Role Permission', 'url' => ['/role-permission/index']];
-            $menuItems[] = ['label' => 'Worker', 'url' => ['/worker/index']];
-            $menuItems[] = ['label' => 'User', 'url' => ['/user/index']];
-            $menuItems[] = ['label' => 'Audit', 'url' => ['/audit/index']];
-            $menuItems[] = ['label' => 'Forbidden Audit', 'url' => ['/forbidden-audit/index']];
+
 
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
+                $menuItems[] = ['label' => 'Worker', 'url' => ['/worker/index']];
+                $menuItems[] = ['label' => 'Salary', 'url' => ['/salary/index']];
+                $menuItems[] = ['label' => 'Position', 'url' => ['/position/index']];
                 $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']
                 ];
+                if (Yii::$app->user->identity->username == 'admin') {
+                    $menuItems[] = ['label' => 'Role', 'url' => ['/role/index']];
+                    $menuItems[] = ['label' => 'Permission', 'url' => ['/permission/index']];
+                    $menuItems[] = ['label' => 'Role Permission', 'url' => ['/role-permission/index']];
+                    $menuItems[] = ['label' => 'User', 'url' => ['/user/index']];
+                    $menuItems[] = ['label' => 'Audit', 'url' => ['/audit/index']];
+                    $menuItems[] = ['label' => 'Forbidden Audit', 'url' => ['/forbidden-audit/index']];
+                }
             }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],

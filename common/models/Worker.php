@@ -10,7 +10,9 @@ use Yii;
  * @property integer $id
  * @property string $first_name
  * @property string $last_name
- * @property string $salary
+ *
+ * @property Position[] $positions
+ * @property Salary[] $salaries
  */
 class Worker extends \yii\db\ActiveRecord
 {
@@ -28,8 +30,8 @@ class Worker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'salary'], 'required'],
-            [['first_name', 'last_name', 'salary'], 'string', 'max' => 50]
+            [['first_name', 'last_name'], 'required'],
+            [['first_name', 'last_name'], 'string', 'max' => 50]
         ];
     }
 
@@ -42,7 +44,22 @@ class Worker extends \yii\db\ActiveRecord
             'id' => 'ID',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
-            'salary' => 'Salary',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPositions()
+    {
+        return $this->hasMany(Position::className(), ['worker_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSalaries()
+    {
+        return $this->hasMany(Salary::className(), ['worker_id' => 'id']);
     }
 }

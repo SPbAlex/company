@@ -5,13 +5,13 @@
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Worker */
+/* @var $model common\models\Salary */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Workers', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Salaries', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="worker-view">
+<div class="salary-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,8 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => UserRole::getAttributes([
                                                     'id',
-                                                    'first_name',
-                                                    'last_name',
+                                                    'worker_id',
+                                                    'salary',
                                                 ], $model),
     ]) ?>
 

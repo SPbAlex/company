@@ -5,18 +5,18 @@
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Worker */
+/* @var $model common\models\Salary */
 
-$this->title = 'Create Worker';
-$this->params['breadcrumbs'][] = ['label' => 'Workers', 'url' => ['index']];
+$this->title = 'Create Salary';
+$this->params['breadcrumbs'][] = ['label' => 'Salaries', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="worker-create">
+<div class="salary-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= UserRole::getRender($this->render('_form', [
         'model' => $model,
-    ]), $model, 'insert')?>
+    ]), $model, 'insert') ?>
 
 </div>

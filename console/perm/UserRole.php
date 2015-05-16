@@ -13,43 +13,115 @@
     use common\models\Role;
     use common\models\RolePermission;
     use common\models\User;
+    use common\models\Worker;
     use Yii;
 
     class UserRole
     {
-        private $id;
-        private $role_id;
-        private $role;
-
-        public function __construct()
+        /**
+         * @param      $model \yii\db\ActiveRecord
+         * @param      $operation
+         * @param bool $hardAccess
+         * @internal param bool $hard
+         * @return bool
+         */
+        public static function getAccess($model, $operation, $hardAccess)
         {
-            $this->id = Yii::$app->user->id;
-            $this->role = User::findOne(['id' => $this->id])->role;
-            $this->role_id = Role::findOne(['name' => $this->role])->id;
-        }
+            $fieldAccess = false;
 
-        public function can($tableName, $fieldName, $operation)
-        {
-            if ($this->role == 'admin') {
+            foreach ($model->attributeLabels() as $field => $v) {
+                var_dump($field);
+                if (!UserRole::can($model::tableName(), $field, $operation)) {
+                    if ($hardAccess) {
+                        return false;
+                    }
+                } else {
+                    $fieldAccess = true;
+                }
+            }
+
+            if ($hardAccess) {
                 return true;
             }
 
-            foreach (RolePermission::findAll(['role_id' => $this->role_id]) as $permission) {
+            return $fieldAccess;
+        }
+
+        public static function can($tableName, $fieldName, $operation)
+        {
+            $id = Yii::$app->user->id;
+            $role = User::findOne(['id' => $id])->role;
+            $role_id = Role::findOne(['name' => $role])->id;
+
+            if ($role == 'admin') {
+                return true;
+            }
+
+            foreach (RolePermission::findAll(['role_id' => $role_id]) as $permission) {
+
                 /* @var $perm Permission */
-                $perm = Permission::findOne(['id' => $permission->id]);
-                if ($perm->table_name == $tableName && $perm->field_name == $fieldName &&
-                    $perm->operation_name == $operation
-                ) {
-                    return true;
+                $perm = Permission::findOne(['id' => $permission->permission_id]);
+                if (!is_null($perm)) {
+                    if ($perm->table_name == $tableName && $perm->field_name == $fieldName &&
+                        $perm->operation_name == $operation
+                    ) {
+                        return true;
+                    }
                 }
             }
 
             return false;
         }
 
-
-        public function __toString()
+        /**
+         * @param $render string
+         * @param $model  \yii\db\ActiveRecord
+         * @param $action string
+         * @return string
+         */
+        public static function getRender($render, $model, $action)
         {
-            return (String)$this->id;
+            if (User::findOne(['id' => Yii::$app->user->id])->role == 'admin') {
+                return $render;
+            }
+
+            foreach ($model->fields() as $field) {
+                if (!($action == 'update' && $field == 'id')) {
+                    if (!UserRole::can($model::tableName(), $field, $action)) {
+                        $str = '<div class="form-group field-' . $model::tableName() . '-' . $field;
+                        $marker = strpos($render, $str);
+                        $unAccessible = substr($render, $marker,
+                                               strpos($render, '<div', $marker + strlen($str)) - $marker);
+                        $render = str_replace($unAccessible, '', $render);
+                    }
+                }
+            }
+
+            return $render;
+        }
+
+        /**
+         * @param $attributes
+         * @param $model      \yii\db\ActiveRecord
+         * @return array $result
+         */
+        public static function getAttributes($attributes, $model)
+        {
+            $result = [];
+            $action = 'select';
+            if (User::findOne(['id' => Yii::$app->user->id])->role == 'admin') {
+                return $attributes;
+            }
+
+            foreach ($attributes as $attribute) {
+                if (is_string($attribute)) {
+                    if (UserRole::can($model::tableName(), $attribute, $action)) {
+                        $result [] = $attribute;
+                    }
+                } else {
+                    $result [] = $attribute;
+                }
+            }
+            return $result;
         }
     }

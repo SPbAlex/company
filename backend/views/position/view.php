@@ -1,17 +1,16 @@
 <?php
 
-    use console\perm\UserRole;
-    use yii\helpers\Html;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Worker */
+/* @var $model common\models\Position */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Workers', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Positions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="worker-view">
+<div class="position-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -28,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => UserRole::getAttributes([
-                                                    'id',
-                                                    'first_name',
-                                                    'last_name',
-                                                ], $model),
+        'attributes' => [
+            'id',
+            'worker_id',
+            'position',
+        ],
     ]) ?>
 
 </div>

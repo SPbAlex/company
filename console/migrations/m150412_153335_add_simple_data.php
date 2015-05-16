@@ -11,12 +11,27 @@
                 'id'         => 'int(11) NOT NULL auto_increment PRIMARY KEY',
                 'first_name' => 'VARCHAR(50) NOT NULL',
                 'last_name'  => 'VARCHAR(50) NOT NULL',
-                'salary'     => 'VARCHAR(50) NOT NULL',
             ]);
+
+            $this->createTable('salary', [
+                'id'        => 'int(11) NOT NULL auto_increment PRIMARY KEY',
+                'worker_id' => 'int(11) NOT NULL',
+                'salary'    => 'VARCHAR(50) NOT NULL',
+            ]);
+            $this->addForeignKey('worker_id', 'salary', 'worker_id', 'worker', 'id');
+
+            $this->createTable('position', [
+                'id'        => 'int(11) NOT NULL auto_increment PRIMARY KEY',
+                'worker_id' => 'int(11) NOT NULL',
+                'position'  => 'VARCHAR(50) NOT NULL',
+            ]);
+            $this->addForeignKey('worker', 'position', 'worker_id', 'worker', 'id');
         }
 
         public function down()
         {
+            $this->dropTable('position');
+            $this->dropTable('salary');
             $this->dropTable('worker');
         }
 

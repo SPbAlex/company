@@ -1,24 +1,24 @@
 <?php
 
-use console\perm\UserRole;
-use yii\helpers\Html;
+    use common\models\Salary;
+    use console\perm\UserRole;
+    use yii\helpers\Html;
 use yii\grid\GridView;
-use common\models\Worker;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\WorkerSearch */
+/* @var $searchModel backend\models\SalarySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Workers';
+$this->title = 'Salaries';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="worker-index">
+<div class="salary-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Worker', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Salary', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -27,10 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => UserRole::getAttributes([
                                                  ['class' => 'yii\grid\SerialColumn'],
                                                  'id',
-                                                 'first_name',
-                                                 'last_name',
+                                                 'worker_id',
+                                                 'salary',
                                                  ['class' => 'yii\grid\ActionColumn'],
-                                             ], (new Worker())),
+                                             ], (new Salary())),
+
     ]); ?>
 
 </div>

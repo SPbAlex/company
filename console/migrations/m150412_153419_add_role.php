@@ -37,7 +37,7 @@ class m150412_153419_add_role extends Migration
         $this->insert('role', ['name' => 'director']);
 
 
-        $this->addColumn('user', 'role', 'VARCHAR(50) NOT NULL DEFAULT "admin"');
+        $this->addColumn('user', 'role', 'VARCHAR(50) NOT NULL DEFAULT "operator"');
     }
 
     public function down()

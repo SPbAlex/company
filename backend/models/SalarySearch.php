@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Worker;
+use common\models\Salary;
 
 /**
- * WorkerSearch represents the model behind the search form about `common\models\Worker`.
+ * SalarySearch represents the model behind the search form about `common\models\Salary`.
  */
-class WorkerSearch extends Worker
+class SalarySearch extends Salary
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class WorkerSearch extends Worker
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['first_name', 'last_name'], 'safe'],
+            [['id', 'worker_id'], 'integer'],
+            [['salary'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class WorkerSearch extends Worker
      */
     public function search($params)
     {
-        $query = Worker::find();
+        $query = Salary::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,10 +57,10 @@ class WorkerSearch extends Worker
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'worker_id' => $this->worker_id,
         ]);
 
-        $query->andFilterWhere(['like', 'first_name', $this->first_name])
-            ->andFilterWhere(['like', 'last_name', $this->last_name]);
+        $query->andFilterWhere(['like', 'salary', $this->salary]);
 
         return $dataProvider;
     }
