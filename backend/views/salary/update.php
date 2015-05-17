@@ -1,6 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+    use console\perm\UserRole;
+    use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Salary */
