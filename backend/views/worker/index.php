@@ -1,6 +1,7 @@
 <?php
 use common\models\Worker;
-use yii\helpers\Html;
+    use console\perm\UserRole;
+    use yii\helpers\Html;
 use yii\grid\GridView;
 
 
@@ -10,16 +11,6 @@ use yii\grid\GridView;
 
 $this->title = 'Workers';
 $this->params['breadcrumbs'][] = $this->title;
-    $user = new \console\perm\UserRole();
-    $form = new Worker();
-    $fields = $form->attributeLabels();
-    foreach ($fields as $field => $v) {
-        if($user->can('worker', $field, 'select')) {
-            $attributes []= $field;
-        }
-    }
-
-    $attributes []= ['class' => 'yii\grid\ActionColumn'];
 
 ?>
 <div class="worker-index">
@@ -34,7 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => $attributes
+        'columns' => UserRole::getAttributes([
+                                                 'id',
+                                                 'first_name',
+                                                 'last_name',
+                                                 ['class' => 'yii\grid\ActionColumn'],
+                                             ], (new Worker())),
     ]); ?>
 
 </div>

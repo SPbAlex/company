@@ -31,7 +31,7 @@ $this->registerJsFile(Yii::getAlias('@web/script/login_pass.js'), ['depends' => 
             <?php ActiveForm::end(); ?>
 
             <table border="1px" borderColor="white" width="100" height="100" id="replica-t">
-                <td
+                <td>
                 </td>
             </table>
         </div>

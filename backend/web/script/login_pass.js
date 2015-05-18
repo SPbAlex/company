@@ -27,7 +27,7 @@ $(document).ready(function () {
     }
 
     $(function () {
-        $('.click-table td').on('click', function () {
+        $(".click-table td").on('click', function () {
             alert($(this).parent('tr').index());
         });
     });
