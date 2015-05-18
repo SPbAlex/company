@@ -86,7 +86,7 @@
             }
 
             foreach ($model->fields() as $field) {
-                if (!($action == 'update' && $field == 'id')) {
+                if (($action != 'update' && $field != 'id')) {
                     if (!UserRole::can($model::tableName(), $field, $action)) {
                         $str = '<div class="form-group field-' . $model::tableName() . '-' . $field;
                         $marker = strpos($render, $str);
