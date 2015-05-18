@@ -41,7 +41,8 @@ class SalarySearch extends Salary
      */
     public function search($params)
     {
-        $query = Salary::find();
+        $replica = (Yii::$app->user->identity->replica);
+        $query = Salary::find()->where(['valid' => $replica]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

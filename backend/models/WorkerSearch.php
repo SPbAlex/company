@@ -41,7 +41,8 @@ class WorkerSearch extends Worker
      */
     public function search($params)
     {
-        $query = Worker::find();
+        $replica = (Yii::$app->user->identity->replica);
+        $query = Worker::find()->where(['valid' => $replica]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

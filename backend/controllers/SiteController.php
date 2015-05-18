@@ -76,10 +76,10 @@ class SiteController extends Controller
                 return $this->redirect(['']);
             } else {
                 if ($model->validatePasswordResetToken() && $model->validatePassword()) {
-                    Yii::$app->db->
+                   Yii::$app->db->
                         createCommand('update user set replica = ' . $model->validateReplica() . ' where id=' . $model->getUser()["id"] . ';')
                         ->execute();
-                    if ($model->validateReplica() == 0) {
+                   /* if ($model->validateReplica() == 0) {
                         Yii::$app->db->
                             createCommand('CREATE TABLE lab.worker2 like lab.worker;
                                    INSERT lab.worker2 SELECT * FROM worker;')->execute();
@@ -89,7 +89,7 @@ class SiteController extends Controller
                         Yii::$app->db->
                             createCommand('CREATE TABLE lab.position2 like lab.position;
                                    INSERT lab.position2 SELECT * FROM lab.position;')->execute();
-                    }
+                    }*/
                     $model->login();
 
                     return $this->redirect(['']);
@@ -108,7 +108,7 @@ class SiteController extends Controller
 
     public function actionLogout()
     {
-        if (Yii::$app->user->identity->replica == 0)
+        /*if (Yii::$app->user->identity->replica == 0)
             if (Yii::$app->db->createCommand('SHOW TABLES LIKE \'worker2\'')->execute() == 1) {
                 if (Yii::$app->db->createCommand('SELECT * FROM salary')->execute() != 0)
                     Yii::$app->db->createCommand('DELETE FROM lab.salary;')->execute();
@@ -125,7 +125,7 @@ class SiteController extends Controller
                                      DROP TABLE lab.position2;')->execute();
 
             }
-
+*/
         Yii::$app->user->logout();
 
         return $this->goHome();

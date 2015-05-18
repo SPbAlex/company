@@ -41,7 +41,8 @@ class PositionSearch extends Position
      */
     public function search($params)
     {
-        $query = Position::find();
+        $replica = (Yii::$app->user->identity->replica);
+        $query = Position::find()->where(['valid' => $replica]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
