@@ -1,6 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+    use console\perm\UserRole;
+    use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Worker */
@@ -27,24 +28,8 @@ $fields = [
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= /*$this->render('_form', [
+    <?= UserRole::getRender($this->render('_form', [
         'model' => $model,
-    ]) */''?>
-
-<?php
-    $fal = null;
-    $udateForm = (String)$this->render('_form', [
-        'model' => $model,
-    ]);
-    foreach($fields as $field) {
-        $str = '<div class="form-group field-' . $model::tableName() . '-' . $field;
-        if(array_search($field, $attributes) === false) {
-            $marker = strpos($udateForm, $str);
-            $rep = substr($udateForm, $marker, strpos($udateForm, '<div', $marker + strlen($str)) - $marker);
-            $udateForm = str_replace($rep, '', $udateForm);
-        }
-    }
-    echo $udateForm;
-?>
+    ]), $model, 'update') ?>
 
     </div>

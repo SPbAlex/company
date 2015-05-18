@@ -1,6 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+    use console\perm\UserRole;
+    use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -9,24 +10,7 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Workers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$user = new \console\perm\UserRole();
 
-    $canDelete = true;
-    $attributes = [];
-    $fields = [
-        'id',
-        'first_name',
-        'last_name',
-    ];
-
-    foreach($fields as $field) {
-        if($user->can($model::tableName(), $field, 'select')) {
-            $attributes []= $field;
-        }
-        if(!$user->can($model::tableName(), $field, 'update')) {
-            $canDelete = false;
-        }
-    }
 ?>
 <div class="worker-view">
 
@@ -35,7 +19,7 @@ $user = new \console\perm\UserRole();
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 
-        <?php if($canDelete) echo Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -45,7 +29,11 @@ $user = new \console\perm\UserRole();
     </p>
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => $attributes
+        'attributes' => UserRole::getAttributes([
+                                                    'id',
+                                                    'first_name',
+                                                    'last_name',
+                                                ], $model),
     ]) ?>
 
 </div>
