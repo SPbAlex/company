@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => UserRole::getAttributes([
-                                                 ['class' => 'yii\grid\SerialColumn'],
                                                  'id',
                                                  'worker_id',
                                                  'salary',

@@ -12,11 +12,6 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
-        'request' => [
-            'enableCookieValidation' => true,
-            'enableCsrfValidation'   => true,
-            'cookieValidationKey'    => 'alkghwienfwuihfkwfu',
-        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,

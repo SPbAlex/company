@@ -20,7 +20,15 @@ class Salary extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'salary';
+        if(Yii::$app->user->identity->replica == 1)
+            return 'salary';
+        else{
+            Yii::$app->db->
+                createCommand('CREATE TABLE IF NOT EXISTS salary2 like salary;
+                                INSERT salary2 SELECT * FROM salary;')->execute();
+
+            return 'salary';
+        }
     }
 
     /**

@@ -21,7 +21,7 @@ class WorkerController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
@@ -38,16 +38,17 @@ class WorkerController extends Controller
     public function actionIndex()
     {
         if (!UserRole::getAccess(new Worker(), 'select', false)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_select');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 're_select');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'select');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 'select');
         }
 
         $searchModel = new WorkerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel'  => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -56,17 +57,19 @@ class WorkerController extends Controller
      * Displays a single Worker model.
      *
      * @param integer $id
+     *
      * @throws NotFoundHttpException
      * @return mixed
      */
     public function actionView($id)
     {
         if (!UserRole::getAccess(new Worker(), 'select', false)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_select');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 're_select');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'select');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 'select');
         }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -82,10 +85,10 @@ class WorkerController extends Controller
     public function actionCreate()
     {
         if (!UserRole::getAccess(new Worker(), 'insert', true)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_insert');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 're_insert');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'insert');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 'insert');
         }
         $model = new Worker();
 
@@ -103,16 +106,17 @@ class WorkerController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
+     *
      * @throws NotFoundHttpException
      * @return mixed
      */
     public function actionUpdate($id)
     {
         if (!UserRole::getAccess(new Worker(), 'update', false)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_update');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 're_update');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'update');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 'update');
         }
 
         $model = $this->findModel($id);
@@ -131,6 +135,7 @@ class WorkerController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
+     *
      * @throws NotFoundHttpException
      * @throws \Exception
      * @return mixed
@@ -138,12 +143,17 @@ class WorkerController extends Controller
     public function actionDelete($id)
     {
         if (!UserRole::getAccess(new Worker(), 'delete', true)) {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 're_delete');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 're_delete');
             throw new NotFoundHttpException('Access denied');
         } else {
-            AuditTable::listen(Yii::$app->user->id,  'worker', 'delete');
+            AuditTable::listen(Yii::$app->user->id, 'worker', 'delete');
         }
-        $this->findModel($id)->delete();
+        if (Yii::$app->db->createCommand('SELECT * FROM salary WHERE worker_id =' . $id)->execute() != 0 ||
+            Yii::$app->db->createCommand('SELECT * FROM lab.position WHERE worker_id =' . $id)->execute() != 0
+        ) {
+            throw new NotFoundHttpException('Can\'t delete this row. There is a correlation.');
+        } else
+            $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -151,7 +161,9 @@ class WorkerController extends Controller
     /**
      * Finds the Worker model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param integer $id
+     *
      * @return Worker the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

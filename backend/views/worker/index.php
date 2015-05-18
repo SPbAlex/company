@@ -11,7 +11,6 @@ use yii\grid\GridView;
 $this->title = 'Workers';
 $this->params['breadcrumbs'][] = $this->title;
     $user = new \console\perm\UserRole();
-    $attributes = [ ['class' => 'yii\grid\SerialColumn']];
     $form = new Worker();
     $fields = $form->attributeLabels();
     foreach ($fields as $field => $v) {

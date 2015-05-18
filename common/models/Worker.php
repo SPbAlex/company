@@ -7,12 +7,12 @@ use Yii;
 /**
  * This is the model class for table "worker".
  *
- * @property integer $id
- * @property string $first_name
- * @property string $last_name
+ * @property integer    $id
+ * @property string     $first_name
+ * @property string     $last_name
  *
  * @property Position[] $positions
- * @property Salary[] $salaries
+ * @property Salary[]   $salaries
  */
 class Worker extends \yii\db\ActiveRecord
 {
@@ -41,9 +41,9 @@ class Worker extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id'         => 'ID',
             'first_name' => 'First Name',
-            'last_name' => 'Last Name',
+            'last_name'  => 'Last Name',
         ];
     }
 

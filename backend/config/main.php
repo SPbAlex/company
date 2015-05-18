@@ -15,6 +15,11 @@ return [
                     'gii' => 'yii\gii\Module',
     ],
     'components' => [
+        'request' => [
+            'enableCookieValidation' => true,
+            'enableCsrfValidation'   => true,
+            'cookieValidationKey'    => 'alkghwienfwuihfkwfu',
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
